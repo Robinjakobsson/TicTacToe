@@ -6,6 +6,8 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        this.winCount = 0;
+        this.loseCount = 0;
     }
 
     public int getWinCount() {
@@ -30,5 +32,11 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public int Wincounter(){
+        return this.winCount++;
+    }
+    public int loseCounter(){
+        return this.loseCount++;
     }
 }

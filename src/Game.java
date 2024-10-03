@@ -1,5 +1,5 @@
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Class to keep track of the game panel.
@@ -10,31 +10,67 @@ public class Game extends MenuMethods {
     boolean isRunning = true;
 
 
+    /**
+     * Method to call in main
+     */
     public void start() {
+        Player player = new Player("Robin the great");
+        Cpu cpu = new Cpu("Third grade Student");
 
         while (isRunning) {
-            Player player = new Player("Robin the great");
-            Cpu cpu = new Cpu("Third grade Student");
 
             System.out.println("1. New Game");
             System.out.println("2. Instructions");
             System.out.println("3. Exit");
+            System.out.println("4. Check scores");
             int menuInput = scanner.nextInt();
 
             switch (menuInput) {
                 case 1:
-                    char[][] gameBoard = {{'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
-                            {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-',},
-                            {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
-                            {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-', ' ',},
-                            {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
-                            {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-', ' ',}};
-                    printBoard(gameBoard);
+                    boolean gameActive = true;
+                        char[][] gameBoard = {{'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
+                                {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-',},
+                                {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
+                                {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-', ' ',},
+                                {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
+                                {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-', ' ',}};
+                        printBoard(gameBoard);
+                        while (gameActive){
+                        System.out.println("Enter a placement (1-9)");
+                        int pos = scanner.nextInt();
 
-                    System.out.println("Enter a placement (1-9)");
-                    int pos = scanner.nextInt();
-                    placement(pos, gameBoard, player);
+                        while (!checkValid(pos, gameBoard)) {
+                            System.out.println("Not valid move...");
+                            pos = scanner.nextInt();
+                        }
+                            placement(pos,gameBoard,player);
 
+                        if (menu.checkWinner(gameBoard, 'X')){
+                            System.out.println(player.name + " Wins!");
+                            gameActive = false;
+                            player.setWinCount(player.getWinCount()+ 1);
+                            cpu.setLoseCount(cpu.getLoseCount()+ 1);
+                            break;
+                        }
+                        Random random = new Random();
+                        int enemyPos = random.nextInt(1,10);
+                        while (!checkValid(enemyPos,gameBoard)) {
+                                enemyPos = random.nextInt(1,10);
+                            }
+                        placement(enemyPos,gameBoard,cpu);
+
+                        if (checkWinner(gameBoard, 'O')){
+                            System.out.println("CPU wins");
+                            cpu.setWinCount(cpu.getWinCount() + 1);
+                            player.setLoseCount(player.getLoseCount() + 1);
+                            gameActive = false;
+                        }
+                        if (isBoardFull(gameBoard)){
+                            System.out.println("it's a tie!");{
+                                gameActive = false;
+                            }
+                        }
+                        }
                     break;
                 case 2:
                     menu.exampleBoard();
@@ -43,76 +79,15 @@ public class Game extends MenuMethods {
                 case 3:
                     isRunning = false;
                     break;
-            }
-        }
-    }
-
-
-    /**
-     * Method to print the GameBoard
-     * @param gameBoard is the GameBoard that is being passed through
-     */
-    public void printBoard(char[][] gameBoard) {
-        for (char[] row : gameBoard) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
-
-    /**
-     * Method to place an X or an O
-     * @param pos is the position of on the board
-     * @param gameBoard is the GameBoard
-     */
-    public void placement(int pos, char[][] gameBoard, Player player) {
-        char symbol = 'x';
-        if (player instanceof Cpu)
-            symbol = 'O';
-
-            switch (pos) {
-                case 1:
-                    gameBoard[1][1] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 2:
-                    gameBoard[1][5] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 3:
-                    gameBoard[1][9] = symbol;
-                    printBoard(gameBoard);
-                    break;
                 case 4:
-                    gameBoard[3][1] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 5:
-                    gameBoard[3][5] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 6:
-                    gameBoard[3][9] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 7:
-                    gameBoard[5][1] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 8:
-                    gameBoard[5][5] = symbol;
-                    printBoard(gameBoard);
-                    break;
-                case 9:
-                    gameBoard[5][9] = symbol;
-                    printBoard(gameBoard);
-                    break;
-
+                    System.out.println(player.getName()+ " Stats");
+                    System.out.println("Wins: "+player.getWinCount());
+                    System.out.println("Losses: "+player.getLoseCount());
+                    System.out.println();
+                    System.out.println(cpu.getName() + " Stats");
+                    System.out.println("Wins: "+cpu.getWinCount());
+                    System.out.println("Losses: "+cpu.getLoseCount());
             }
-
-
-
+        }
     }
-
 }
