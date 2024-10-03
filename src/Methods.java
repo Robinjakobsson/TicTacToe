@@ -1,4 +1,9 @@
-public class MenuMethods {
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Methods {
+    Scanner scanner = new Scanner(System.in);
     /**
      * Displays the board to instruct the player how to
      * Place an X correctly.
@@ -29,19 +34,35 @@ public class MenuMethods {
      * @return True if the move is doable.
      */
     public boolean checkValid (int pos, char[][] gameBoard) {
-        switch (pos){
-            case 1: return gameBoard[1][1] == '-';
-            case 2: return gameBoard[1][5] == '-';
-            case 3: return gameBoard[1][9] == '-';
-            case 4: return gameBoard[3][1] == '-';
-            case 5: return gameBoard[3][5] == '-';
-            case 6: return gameBoard[3][9] == '-';
-            case 7: return gameBoard[5][1] == '-';
-            case 8: return gameBoard[5][5] == '-';
-            case 9: return gameBoard[5][9] == '-';
+        try{
+        switch (pos) {
 
-            default: return false;
+            case 1:
+                return gameBoard[1][1] == '-';
+            case 2:
+                return gameBoard[1][5] == '-';
+            case 3:
+                return gameBoard[1][9] == '-';
+            case 4:
+                return gameBoard[3][1] == '-';
+            case 5:
+                return gameBoard[3][5] == '-';
+            case 6:
+                return gameBoard[3][9] == '-';
+            case 7:
+                return gameBoard[5][1] == '-';
+            case 8:
+                return gameBoard[5][5] == '-';
+            case 9:
+                return gameBoard[5][9] == '-';
+
+            default:
+                return false;
         }
+        }catch (InputMismatchException e){
+            System.out.println("Invalid input ");
+        }
+        return false;
     }
 
     /**
@@ -159,6 +180,85 @@ public class MenuMethods {
                 (gameBoard[1][9] == symbol && gameBoard[3][9] == symbol && gameBoard[5][9] == symbol) ||
                 (gameBoard[1][1] == symbol && gameBoard[3][5] == symbol && gameBoard[5][9] == symbol) ||
                 (gameBoard[1][9] == symbol && gameBoard[3][5] == symbol && gameBoard[5][1] == symbol);
+
+    }
+    public void printStats(Player player, Cpu cpu){
+        System.out.println(player.getName() + " Stats");
+        System.out.println("Wins: " + player.getWinCount());
+        System.out.println("Losses: " + player.getLoseCount());
+        System.out.println();
+        System.out.println(cpu.getName() + " Stats");
+        System.out.println("Wins: " + cpu.getWinCount());
+        System.out.println("Losses: " + cpu.getLoseCount());
+    }
+
+    /**
+     * Prints out a Menu
+     */
+    public void menu(){
+        System.out.println("1. New Game");
+        System.out.println("2. Instructions");
+        System.out.println("3. Exit");
+        System.out.println("4. Check scores");
+    }
+
+    /**
+     * Method to start the game
+     * @param player is the Player
+     * @param cpu is the CPU
+     */
+    public void gameStart(Player player, Cpu cpu){
+        boolean gameActive = true;
+        char[][] gameBoard = {{'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
+                {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-',},
+                {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
+                {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-', ' ',},
+                {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-',},
+                {' ', '-', ' ', '|', ' ', '-', ' ', '|', ' ', '-', ' ',}};
+        printBoard(gameBoard);
+        while (gameActive) {
+            System.out.println("Enter a placement (1-9)");
+            try {
+                int pos = scanner.nextInt();
+
+
+                while (!checkValid(pos, gameBoard)) {
+                    System.out.println("Not valid move...");
+                    pos = scanner.nextInt();
+                }
+                placement(pos, gameBoard, player);
+
+                if (checkWinner(gameBoard, 'X')) {
+                    System.out.println(player.name + " Wins!");
+                    gameActive = false;
+                    player.setWinCount(player.getWinCount() + 1);
+                    cpu.setLoseCount(cpu.getLoseCount() + 1);
+                    break;
+                }
+                Random random = new Random();
+                int enemyPos = random.nextInt(1, 10);
+                while (!checkValid(enemyPos, gameBoard)) {
+                    enemyPos = random.nextInt(1, 10);
+                }
+                placement(enemyPos, gameBoard, cpu);
+
+                if (checkWinner(gameBoard, 'O')) {
+                    System.out.println("CPU wins");
+                    cpu.setWinCount(cpu.getWinCount() + 1);
+                    player.setLoseCount(player.getLoseCount() + 1);
+                    gameActive = false;
+                }
+                if (isBoardFull(gameBoard)) {
+                    System.out.println("it's a tie!");
+                    {
+                        gameActive = false;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error.");
+                scanner.nextLine();
+            }
+        }
 
     }
 }
