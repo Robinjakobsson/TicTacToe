@@ -198,20 +198,6 @@ public class Methods {
         System.out.println("Losses: " + cpu.getLoseCount());
     }
 
-    /**
-     * Identical method to print stats but for 2 players
-     * @param player is Player one
-     * @param playerTwo is Player Two
-     */
-    public void tpStats(Player player,Player playerTwo){
-        System.out.println(player.getName() + " Stats");
-        System.out.println("Wins: " + player.getWinCount());
-        System.out.println("Losses: " + player.getLoseCount());
-        System.out.println();
-        System.out.println(playerTwo.getName() + " Stats");
-        System.out.println("Wins: " + playerTwo.getWinCount());
-        System.out.println("Losses: " + playerTwo.getLoseCount());
-    }
 
     /**
      * Prints out a Menu
@@ -220,7 +206,6 @@ public class Methods {
         System.out.println("1. New Game");
         System.out.println("2. Two player");
         System.out.println("3. Instructions");
-        System.out.println("4. Show scores");
         System.out.println("5. Exit");
     }
 
@@ -281,5 +266,6 @@ public class Methods {
                 scanner.nextLine();
             }
         }
+        printStats(player,cpu);
     }
 }

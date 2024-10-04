@@ -38,13 +38,7 @@ public class Game extends Methods {
                     exampleBoard();
                     break;
                 case 4:
-                    printStats(player,cpu);
-                    break;
-                case 5:
                     isRunning = false;
-                    break;
-
-                case 6:
                     break;
 
                 default:
