@@ -152,7 +152,7 @@ public class Methods {
     }
 
     /**
-     *  Method to Prints out the GameBoard
+     *  Method to Print out the GameBoard
      * @param gameBoard is the GameBoard
      */
     public void printBoard(char[][] gameBoard) {
@@ -182,6 +182,12 @@ public class Methods {
                 (gameBoard[1][9] == symbol && gameBoard[3][5] == symbol && gameBoard[5][1] == symbol);
 
     }
+
+    /**
+     * Method to Check the scores vs CPU
+     * @param player is the Player
+     * @param cpu is the CPU
+     */
     public void printStats(Player player, Cpu cpu){
         System.out.println(player.getName() + " Stats");
         System.out.println("Wins: " + player.getWinCount());
@@ -193,13 +199,29 @@ public class Methods {
     }
 
     /**
+     * Identical method to print stats but for 2 players
+     * @param player is Player one
+     * @param playerTwo is Player Two
+     */
+    public void tpStats(Player player,Player playerTwo){
+        System.out.println(player.getName() + " Stats");
+        System.out.println("Wins: " + player.getWinCount());
+        System.out.println("Losses: " + player.getLoseCount());
+        System.out.println();
+        System.out.println(playerTwo.getName() + " Stats");
+        System.out.println("Wins: " + playerTwo.getWinCount());
+        System.out.println("Losses: " + playerTwo.getLoseCount());
+    }
+
+    /**
      * Prints out a Menu
      */
     public void menu(){
         System.out.println("1. New Game");
-        System.out.println("2. Instructions");
-        System.out.println("3. Exit");
-        System.out.println("4. Check scores");
+        System.out.println("2. Two player");
+        System.out.println("3. Instructions");
+        System.out.println("4. Show scores");
+        System.out.println("5. Exit");
     }
 
     /**
@@ -259,6 +281,5 @@ public class Methods {
                 scanner.nextLine();
             }
         }
-
     }
 }

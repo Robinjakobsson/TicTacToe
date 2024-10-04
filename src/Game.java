@@ -14,6 +14,7 @@ public class Game extends Methods {
     public void start() {
         Player player = new Player("Robin the great");
         Cpu cpu = new Cpu("Third grade Student");
+        TwoPlayerMethods tpMethods = new TwoPlayerMethods();
 
         while (isRunning) {
             methods.menu();
@@ -28,17 +29,24 @@ public class Game extends Methods {
 
             switch (menuInput) {
                 case 1:
-                    methods.gameStart(player,cpu);
+                    gameStart(player,cpu);
                     break;
                 case 2:
-                    methods.exampleBoard();
+                    tpMethods.twoPlayer();
                     break;
                 case 3:
-                    isRunning = false;
+                    exampleBoard();
                     break;
                 case 4:
                     printStats(player,cpu);
                     break;
+                case 5:
+                    isRunning = false;
+                    break;
+
+                case 6:
+                    break;
+
                 default:
                     break;
                 }

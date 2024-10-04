@@ -1,7 +1,7 @@
 public class Player {
-    String name;
-    int winCount;
-    int loseCount;
+    protected String name;
+    protected int winCount;
+    protected int loseCount;
 
     /**
      * Constructor for the Player class
@@ -60,4 +60,7 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
+
 }
+
+
